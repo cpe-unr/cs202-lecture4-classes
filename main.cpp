@@ -5,10 +5,9 @@
 
 using namespace std;
 
-// Version 2: Creeping toward an object-oriented approach
+// Version 3: Kinda getting there with OO
 
 class Cat {
-
     static const int NUMCATPARAMS = 5;
     bool catInfoLoaded = false;
     string catName;
@@ -38,7 +37,6 @@ private:
         return sleepTime;
     }
 public:
-
     bool init(const string catInfoFile){
         ifstream catDataStream;
         catDataStream.open(catInfoFile);
