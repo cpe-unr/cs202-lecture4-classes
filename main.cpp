@@ -8,7 +8,8 @@ using namespace std;
 // Version 2: Creeping toward an object-oriented approach
 
 struct Cat {
-    void getCatInfo(ifstream &catDataStream, string &catName, string &nameCatCallsSelf, int &catAge, string &catFurColor,
+    void getCatInfo(ifstream &catDataStream, string &catName, string &nameCatCallsSelf,
+                    int &catAge, string &catFurColor,
                     string &catBreed, string catInfo[]) {
         int index = 0;
         string tmp;
@@ -49,6 +50,7 @@ int main() {
         cout << "Could not open file" << endl;
         return 0;
     }
+    // can we do something about these variables?
     string catName;
     string nameCatCallsSelf;
     int catAge;
@@ -57,7 +59,7 @@ int main() {
     string catInfo[NUMCATPARAMS];
     Cat myCat;
     myCat.getCatInfo(catDataStream, catName, nameCatCallsSelf, catAge,
-               catFurColor, catBreed, catInfo);
+                     catFurColor, catBreed, catInfo);
     myCat.printCatDetails(catName, nameCatCallsSelf, catAge, catFurColor, catBreed);
     return 0;
 }
