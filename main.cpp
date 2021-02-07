@@ -2,17 +2,36 @@
 #include <fstream>
 #include <string>
 
-const int NUMCATPARAMS = 5;
+
 using namespace std;
 
 // Version 2: Creeping toward an object-oriented approach
 
 struct Cat {
-    void getCatInfo(ifstream &catDataStream, string &catName, string &nameCatCallsSelf,
-                    int &catAge, string &catFurColor,
-                    string &catBreed, string catInfo[]) {
+    static const int NUMCATPARAMS = 5;
+    bool catInfoLoaded = false;
+    string catName;
+    string nameCatCallsSelf;
+    int catAge;
+    string catFurColor;
+    string catBreed;
+
+
+    bool init(const string catInfoFile){
+        ifstream catDataStream;
+        catDataStream.open(catInfoFile);
+        if (catDataStream.bad()) {
+            cout << "Could not open file" << endl;
+            return false;
+        }
+        getCatInfo(catDataStream);
+        catDataStream.close();
+        catInfoLoaded = true;
+        return true;
+    }
+    void getCatInfo(ifstream &catDataStream) {
+        string catInfo[NUMCATPARAMS];
         int index = 0;
-        string tmp;
         for (index = 0; index < NUMCATPARAMS; index++) {
             getline(catDataStream, catInfo[index]);
         }
@@ -23,17 +42,16 @@ struct Cat {
         catBreed = catInfo[4];
     }
 
-    void printCatDetails(const string &catName, const string &nameCatCallsSelf, int catAge, const string &catFurColor,
-                         const string &catBreed) {
+    void printCatDetails() {
         cout << "Cat Name: " << catName << "\n";
         cout << "Cat Real Name: " << nameCatCallsSelf << "\n";
         cout << "Cat Fur Color: " << catFurColor << "\n";
         cout << "Cat Breed: " << catBreed << "\n";
-        int sleepTime = catSleepTime(catAge, catBreed);
+        int sleepTime = catSleepTime();
         cout << "Cat Sleep Time: " << sleepTime << "\n";
     }
 
-    int catSleepTime(int catAge, string catBreed) {
+    int catSleepTime() {
         int sleepTime = 0;
         if (catBreed.compare("persion")) {
             return catAge > 10 ? 20 : 10;
@@ -44,23 +62,9 @@ struct Cat {
 };
 
 int main() {
-    ifstream catDataStream;
-    catDataStream.open("catdata.txt");
-    if (catDataStream.bad()) {
-        cout << "Could not open file" << endl;
-        return 0;
-    }
-    // can we do something about these variables?
-    string catName;
-    string nameCatCallsSelf;
-    int catAge;
-    string catFurColor;
-    string catBreed;
-    string catInfo[NUMCATPARAMS];
     Cat myCat;
-    myCat.getCatInfo(catDataStream, catName, nameCatCallsSelf, catAge,
-                     catFurColor, catBreed, catInfo);
-    myCat.printCatDetails(catName, nameCatCallsSelf, catAge, catFurColor, catBreed);
+    myCat.init("catdata.txt");
+    myCat.printCatDetails();
     return 0;
 }
 
