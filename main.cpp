@@ -7,7 +7,8 @@ using namespace std;
 
 // Version 2: Creeping toward an object-oriented approach
 
-struct Cat {
+class Cat {
+
     static const int NUMCATPARAMS = 5;
     bool catInfoLoaded = false;
     string catName;
@@ -16,6 +17,27 @@ struct Cat {
     string catFurColor;
     string catBreed;
 
+private:
+    void getCatInfo(ifstream &catDataStream) {
+        string catInfo[NUMCATPARAMS];
+        int index = 0;
+        for (index = 0; index < NUMCATPARAMS; index++) {
+            getline(catDataStream, catInfo[index]);
+        }
+        catName = catInfo[0];
+        nameCatCallsSelf = catInfo[1];
+        catAge = stoi(catInfo[2]);
+        catFurColor = catInfo[3];
+        catBreed = catInfo[4];
+    }
+    int catSleepTime() {
+        int sleepTime = 0;
+        if (catBreed.compare("persion")) {
+            return catAge > 10 ? 20 : 10;
+        };
+        return sleepTime;
+    }
+public:
 
     bool init(const string catInfoFile){
         ifstream catDataStream;
@@ -29,18 +51,6 @@ struct Cat {
         catInfoLoaded = true;
         return true;
     }
-    void getCatInfo(ifstream &catDataStream) {
-        string catInfo[NUMCATPARAMS];
-        int index = 0;
-        for (index = 0; index < NUMCATPARAMS; index++) {
-            getline(catDataStream, catInfo[index]);
-        }
-        catName = catInfo[0];
-        nameCatCallsSelf = catInfo[1];
-        catAge = stoi(catInfo[2]);
-        catFurColor = catInfo[3];
-        catBreed = catInfo[4];
-    }
 
     void printCatDetails() {
         cout << "Cat Name: " << catName << "\n";
@@ -50,22 +60,12 @@ struct Cat {
         int sleepTime = catSleepTime();
         cout << "Cat Sleep Time: " << sleepTime << "\n";
     }
-
-    int catSleepTime() {
-        int sleepTime = 0;
-        if (catBreed.compare("persion")) {
-            return catAge > 10 ? 20 : 10;
-        };
-        return sleepTime;
-
-    }
 };
 
 int main() {
     Cat myCat;
     myCat.init("catdata.txt");
     myCat.printCatDetails();
-    return 0;
 }
 
 
